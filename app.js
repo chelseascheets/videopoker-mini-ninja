@@ -1,5 +1,6 @@
 (function () {
 
+	
 
 	function getCardValue(card) {
 
@@ -66,3 +67,4 @@
 	}
 
 })();
+
