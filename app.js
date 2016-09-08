@@ -56,6 +56,9 @@
     }
 
     function dealCards() {
+		if(deal.classList.contains('disabled')) {
+			return;
+		}
         if (firstClick) {
             firstClick = false;
             updateBalance(-betAmount);
