@@ -37,13 +37,22 @@
         betAmount = event.target.valueAsNumber;
         if (betAmount > 0) {
             deal.classList.remove('disabled');
-        } else {
+        } 
+		else {
             deal.classList.add('disabled')
         }
     }
 
      function keepCard(event){
-        event.target.classList.add('hold');
+        
+		let image = event.target;
+
+		if (image.classList.contains('hold')) {
+		image.classList.remove('hold');
+		 }
+	 	else {
+			 image.classList.add('hold');
+		 }
     }
 
     function dealCards() {
@@ -53,13 +62,24 @@
 
             deck = getDeck();
             hand = [];
+
             for (var i = 0; i < 5; i++) {
                 let card = deck.shift();
                 dealCard(card, i);
             }
         }
         else {
+			for (var i = 0; i < 5; i++) {
+				if (!cardImages[i].classList.contains('hold')) {
+					let card = deck.shift();
+					dealCard(card, i);
+				}
+				else {
+					cardImages[i].classList.remove('hold')
+				}
+			}
 
+			deal.classList.add('disabled')
         }
     }
 

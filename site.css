@@ -15,5 +15,6 @@ body {
   width: 100px;
 }
 .hold {
-  border: 2px solid 
+  border: 2px solid lawngreen;
+  border-raidus: 5px;
 }
