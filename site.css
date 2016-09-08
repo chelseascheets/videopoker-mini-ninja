@@ -1,9 +1,22 @@
 body {
-	margin: 20px;
+  margin: 25px;
+  font: 24px Helvetica, Sans-Serif; 
+  line-height: 24px; 
+  background-image: url(); 
+  background-color: white;
+  background-repeat: repeat-x;
+  background-size: 100%;
+  background-position: center;
+  text-color: black;
 }
 
 .card {
   display: inline-block;
   margin: 3px;
   width: 100px;
+}
+div {
+  margin: auto;
+  text-color: black;
+
 }
