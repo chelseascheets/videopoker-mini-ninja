@@ -1,11 +1,83 @@
 (function () {
+	let betAmount = 0;
+    let accountBalance = 0;
+    let firstClick = true;
+    let deck = [];
+    let hand = [];
 
-	
+    let balance = document.getElementById('balance');
+    let bet = document.getElementById('bet');
+    let deal = document.getElementById('deal');
+
+    let cardImages = [];
+    cardImages[0] = document.getElementById('card0');
+    cardImages[1] = document.getElementById('card1');
+    cardImages[2] = document.getElementById('card2');
+    cardImages[3] = document.getElementById('card3');
+    cardImages[4] = document.getElementById('card4');
+
+    let saveLinks = [];
+    saveLinks[0] = document.getElementById('saveCard0');
+    saveLinks[1] = document.getElementById('saveCard1');
+    saveLinks[2] = document.getElementById('saveCard2');
+	saveLinks[3] = document.getElementById('saveCard3');
+    saveLinks[4] = document.getElementById('saveCard4');
+
+    deal.classList.add('disabled');
+    deal.addEventListener('click', dealCards);
+    bet.addEventListener('change', handleBetChange);
+
+    saveLinks.forEach(function (link) {
+        link.addEventListener('click', keepCard);
+    });
+
+    updateBalance(1000);
+
+    function handleBetChange(event) {
+        betAmount = event.target.valueAsNumber;
+        if (betAmount > 0) {
+            deal.classList.remove('disabled');
+        } else {
+            deal.classList.add('disabled')
+        }
+    }
+
+     function keepCard(event){
+        event.target.classList.add('hold');
+    }
+
+    function dealCards() {
+        if (firstClick) {
+            firstClick = false;
+            updateBalance(-betAmount);
+
+            deck = getDeck();
+            hand = [];
+            for (var i = 0; i < 5; i++) {
+                let card = deck.shift();
+                dealCard(card, i);
+            }
+        }
+        else {
+
+        }
+    }
+
+    function dealCard(card, position) {
+        hand[position] = card;
+        cardImages[position].src = 'img/' + card + '.png';
+    }
+
+	function updateBalance(amount) {
+        accountBalance += amount;
+        balance.innerHTML = accountBalance;
+    }
+
 
 	function getCardValue(card) {
 
 		card = card.replace(/H|C|D|S/, '');
-		
+
 		switch (card) {
 			case '2':
 			case '3':
@@ -20,10 +92,10 @@
 
 			case 'J':
 				return 11;
-				
+
 			case 'Q':
 				return 12;
-				
+
 			case 'K':
 				return 13;
 
@@ -41,7 +113,7 @@
 			'2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '10D', 'JD', 'QD', 'KD', 'AD'
 		];
 
-		return shuffle(deck);		
+		return shuffle(deck);
 	}
 
 	function shuffle(array) {
