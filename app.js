@@ -1,5 +1,4 @@
 (function () {
-<<<<<<< HEAD
 
 	let betAmount = 0;
 	let accountBalance = 0;
@@ -76,7 +75,7 @@
 		accountBalance += betAmount;
 		balance.innerHTML = accountBalance;
 	}
-=======
+
 	let betAmount = 0;
     let accountBalance = 0;
     let firstClick = true;
@@ -174,16 +173,15 @@
         balance.innerHTML = accountBalance;
     }
 
->>>>>>> master
 
 	function getCardValue(card) {
 
 		card = card.replace(/H|C|D|S/, '');
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> master
+		
+
+
+
 		switch (card) {
 			case '2':
 			case '3':
@@ -198,17 +196,17 @@
 
 			case 'J':
 				return 11;
-<<<<<<< HEAD
+
 				
 			case 'Q':
 				return 12;
 				
-=======
+
 
 			case 'Q':
 				return 12;
 
->>>>>>> master
+
 			case 'K':
 				return 13;
 
@@ -226,11 +224,11 @@
 			'2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '10D', 'JD', 'QD', 'KD', 'AD'
 		];
 
-<<<<<<< HEAD
+
 		return shuffle(deck);		
-=======
+
 		return shuffle(deck);
->>>>>>> master
+
 	}
 
 	function shuffle(array) {
@@ -255,9 +253,9 @@
 		return array;
 	}
 
-<<<<<<< HEAD
-})();
-=======
+
 })();
 
->>>>>>> master
+})();
+
+
