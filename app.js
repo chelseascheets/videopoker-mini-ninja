@@ -5,10 +5,11 @@
 	let firstClick = true;
 	let deck = [];
 	let hand = [];
-	
+
 	let balance = document.getElementById('balance');
 	let bet = document.getElementById('bet');
 	let deal = document.getElementById('deal');
+	let handResult = document.getElementById('handResult');
 
 	let cardImages = [];
 	cardImages[0] = document.getElementById('card0');
@@ -46,7 +47,7 @@
 
 	function keepCard(event) {
 		let image = event.target;
-		if(image.classList.contains('hold')) {
+		if (image.classList.contains('hold')) {
 			image.classList.remove('hold');
 		}
 		else {
@@ -55,7 +56,7 @@
 	}
 
 	function dealCards() {
-		if(deal.classList.contains('disabled')) {
+		if (deal.classList.contains('disabled')) {
 			return;
 		}
 		if (firstClick) {
@@ -65,13 +66,13 @@
 			deck = getDeck();
 			hand = [];
 
-			for (var i=0; i < 5; i++) {
+			for (var i = 0; i < 5; i++) {
 				let card = deck.shift();
 				dealCard(card, i);
 			}
 		}
 		else {
-			for(var i = 0; i < 5; i++){
+			for (var i = 0; i < 5; i++) {
 				if (!cardImages[i].classList.contains('hold')) {
 					let card = deck.shift();
 					dealCard(card, i);
@@ -81,7 +82,120 @@
 				}
 			}
 			deal.classList.add('disabled');
+		
+		evaluateHand(hand);
 		}
+	}
+
+	function hasFourOfAKind(groups) {
+		return groups.some(function (group) {
+			return group.length === 4;
+		});
+	}
+
+	function isFullHouse(groups) {
+		return hasThreeOfAKind(groups) && hasPair(groups);
+	}
+
+	function isFlush(hand) {
+		return isSingleSuite(hand, 'H') ||
+			isSingleSuite(hand, 'D') ||
+			isSingleSuite(hand, 'C') ||
+			isSingleSuite(hand, 'S');
+	}
+
+	function isStraight(values) {
+
+		var uniqueVals = uniqueValues(values);
+
+		if (uniqueVals.length < 5) {
+			return false;
+		}
+
+		if (values[4] - values[0] === 4) {
+			return true;
+		}
+
+		if (values.join(',') === '2,3,4,5,14') {
+			return true;
+		}
+
+		return false;
+	}
+
+	function hasThreeOfAKind(groups) {
+		return groups.some(function (group) {
+			return group.length === 3;
+		});
+	}
+
+	function hasTwoPairs(groups) {
+		var pairs = 0;
+
+		groups.forEach(function (group) {
+			pairs += group.length === 2 ? 1 : 0;
+		});
+
+		return pairs > 1;
+	}
+
+	function isJacksOrBetter(groups) {
+
+		var isTrue = false;
+
+		groups.forEach(function (group) {
+			if (group[1] >= 11) isTrue = true;
+		});
+
+		return isTrue;
+	}
+
+	function hasPair(groups) {
+		return groups.some(function (group) {
+			return group.length === 2;
+		});
+	}
+
+	function groupValues(values) {
+
+		var groups = [];
+		var uniqueVals = uniqueValues(values);
+
+		uniqueVals.forEach(function (uniqueValue) {
+			var group = values.filter(function (value) {
+				return value === uniqueValue;
+			});
+
+			groups.push(group);
+		});
+
+		return groups;
+	}
+
+	function uniqueValues(values) {
+		var unique = [];
+		var last = 0;
+
+		values.forEach(function (value) {
+			if (value !== last) {
+				unique.push(value);
+				last = value;
+			}
+		});
+
+		return unique;
+	}
+
+	function getValues(hand) {
+		return hand.map(getCardValue).sort(function (a, b) {
+			return parseInt(a) - parseInt(b);
+		});
+	}
+
+	function isSingleSuite(hand, suit) {
+		return hand.every(function (card) {
+			return card.endsWith(suit);
+		});
 	}
 
 	function dealCard(card, position) {
@@ -89,9 +203,58 @@
 		cardImages[position].src = 'img/' + card + '.png';
 	}
 
-	function updateBalance (amount) {
+	function updateBalance(amount) {
 		accountBalance += amount;
 		balance.innerHTML = accountBalance;
+	}
+
+	function showResult(message) {
+		handResult.innerHTML = message;
+	}
+
+	function evaluateHand(hand) {
+		let values = getValues(hand);
+		let groups = groupValues(values);
+
+		if (isRoyalFlush(hand, values)) {
+			showResult('Royal Flush!!');
+			updateBalance(betAmount * 800);
+		}
+		else if (isStraightFlush(hand, values)) {
+			showResult('Straight Flush!!');
+			updateBalance(betAmount * 50);
+		}
+		else if (hasFourOfAKind(groups)) {
+			showResult('4 of a Kind!!');
+			updateBalance(betAmount * 40);
+		}
+		else if (isFullHouse(groups)) {
+			showResult('Full House!!');
+			updateBalance(betAmount * 10);
+		}
+		else if (isFlush(hand)) {
+			showResult('Flush!!');
+			updateBalance(betAmount * 7);
+		}
+		else if (isStraight(values)) {
+			showResult('Straight!!');
+			updateBalance(betAmount * 5);
+		}
+		else if (hasThreeOfAKind(groups)) {
+			showResult('3 of a Kind!!');
+			updateBalance(betAmount * 3);
+		}
+		else if (hasTwoPairs(grous)) {
+			showResult('2 Pair!');
+			updateBalance(betAmount * 2);
+		}
+		else if (isJacksOrBetter(groups)) {
+			showResult('Jacks or Better!!');
+			updateBalance(betAmount * 1);
+		}
+		else {
+			showResult('Aw, you lose!!');
+		}
 	}
 
 	function getCardValue(card) {
@@ -110,7 +273,7 @@
 
 			case 'J':
 				return 11;
-				
+
 			case 'Q':
 				return 12;
 
@@ -132,7 +295,7 @@
 			'2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C', '10C', 'JC', 'QC', 'KC', 'AC',
 			'2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '10D', 'JD', 'QD', 'KD', 'AD'
 		];
-		return shuffle(deck);		
+		return shuffle(deck);
 	}
 
 	function shuffle(array) {
