@@ -18,10 +18,10 @@
 	cardImages[4] = document.getElementById('card4');
 
 	let saveLinks = [];
-	saveLinks[0] = document.getElementById('saveLinks0');
-	saveLinks[1] = document.getElementById('saveLinks1');
-	saveLinks[2] = document.getElementById('saveLinks2');
-	saveLinks[3] = document.getElementById('saveLinks3');
+	saveLinks[0] = document.getElementById('saveCard0');
+	saveLinks[1] = document.getElementById('saveCard1');
+	saveLinks[2] = document.getElementById('saveCard2');
+	saveLinks[3] = document.getElementById('saveCard3');
 	saveLinks[4] = document.getElementById('saveCard4');
 
 	deal.classList.add('disabled');
