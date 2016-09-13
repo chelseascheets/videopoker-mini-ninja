@@ -10,6 +10,7 @@
 	let bet = document.getElementById('bet');
 	let deal = document.getElementById('deal');
 	let handResult = document.getElementById('handResult');
+	let replay = document.getElementById('replay');
 
 	let cardImages = [];
 	cardImages[0] = document.getElementById('card0');
@@ -27,6 +28,7 @@
 
 	deal.classList.add('disabled');
 	deal.addEventListener('click', dealCards);
+	replay.addEventListener('click', playAgain);
 	bet.addEventListener('change', handleBetChange);
 
 	saveLinks.forEach(function (link) {
@@ -53,6 +55,19 @@
 		else {
 			image.classList.add('hold');
 		}
+	}
+
+	function playAgain() {
+		
+		bet.value = 0;
+		firstClick = true;
+
+		showResult('');
+
+		cardImages.forEach(function (img) {
+			img.src = 'img/back.png';
+		})
+		replay.classList.add('hidden');
 	}
 
 	function dealCards() {
@@ -84,6 +99,8 @@
 			deal.classList.add('disabled');
 		
 		evaluateHand(hand);
+
+		replay.classList.remove('hidden');
 		}
 	}
 
