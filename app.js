@@ -5,6 +5,7 @@
 	let firstClick = true;
 	let deck = [];
 	let hand = [];
+	
 
 	let balance = document.getElementById('balance');
 	let bet = document.getElementById('bet');
