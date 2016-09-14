@@ -5,13 +5,12 @@
 	let firstClick = true;
 	let deck = [];
 	let hand = [];
-	
 
 	let balance = document.getElementById('balance');
 	let bet = document.getElementById('bet');
 	let deal = document.getElementById('deal');
-	let handResult = document.getElementById('handResult');
 	let replay = document.getElementById('replay');
+	let handResult = document.getElementById('handResult');
 
 	let cardImages = [];
 	cardImages[0] = document.getElementById('card0');
@@ -39,17 +38,21 @@
 	updateBalance(1000);
 
 	function handleBetChange(event) {
+
 		betAmount = event.target.valueAsNumber;
+
 		if (betAmount > 0) {
 			deal.classList.remove('disabled');
 		}
 		else {
-			deal.classList.add('diabled');
+			deal.classList.add('disabled');
 		}
 	}
 
 	function keepCard(event) {
+
 		let image = event.target;
+
 		if (image.classList.contains('hold')) {
 			image.classList.remove('hold');
 		}
@@ -58,23 +61,12 @@
 		}
 	}
 
-	function playAgain() {
-		
-		bet.value = 0;
-		firstClick = true;
-
-		showResult('');
-
-		cardImages.forEach(function (img) {
-			img.src = 'img/back.png';
-		})
-		replay.classList.add('hidden');
-	}
-
 	function dealCards() {
+
 		if (deal.classList.contains('disabled')) {
 			return;
 		}
+
 		if (firstClick) {
 			firstClick = false;
 			updateBalance(-betAmount);
@@ -94,15 +86,98 @@
 					dealCard(card, i);
 				}
 				else {
-					cardImages[i].classList.remove('hold');
+					cardImages[i].classList.remove('hold')
 				}
 			}
-			deal.classList.add('disabled');
-		
-		evaluateHand(hand);
 
-		replay.classList.remove('hidden');
+			deal.classList.add('disabled');
+			
+			evaluateHand(hand);	
+			
+			replay.classList.remove('hidden');
 		}
+	}
+
+	function playAgain() {
+
+		bet.value = 0;	
+		firstClick = true;
+
+		showResult('');
+			
+		cardImages.forEach(function (img) {
+			img.src = 'img/back.png';
+		});
+
+		replay.classList.add('hidden');
+	}	
+
+	function dealCard(card, position) {
+		hand[position] = card;
+		cardImages[position].src = 'img/' + card + '.png';
+	}
+
+	function updateBalance(amount) {
+		accountBalance += amount;
+		balance.innerHTML = accountBalance;
+	}
+
+	function showResult(message) {
+		handResult.innerHTML = message;
+	}	
+
+	function evaluateHand(hand) {
+
+		let values = getValues(hand);
+		let groups = groupValues(values);
+
+		if (isRoyalFlush(hand, values)) {
+			showResult('Royal Flush!!!');
+			updateBalance(betAmount * 800);
+		}
+		else if (isStraightFlush(hand, values)) {
+			showResult('Straight Flush!!');
+			updateBalance(betAmount * 50);
+		}
+		else if (hasFourOfAKind(groups)) {
+			showResult('4 Of A Kind!');
+			updateBalance(betAmount * 40);
+		}
+		else if (isFullHouse(groups)) {
+			showResult('Full House!');
+			updateBalance(betAmount * 10);
+		}
+		else if (isFlush(hand)) {
+			showResult('Flush!');
+			updateBalance(betAmount * 7);
+		}
+		else if (isStraight(values)) {
+			showResult('Straight!');
+			updateBalance(betAmount * 5);
+		}
+		else if (hasThreeOfAKind(groups)) {
+			showResult('3 Of A Kind');
+			updateBalance(betAmount * 3);
+		}
+		else if (hasTwoPairs(groups)) {
+			showResult('2 Pair');
+			updateBalance(betAmount * 2);
+		}
+		else if (isJacksOrBetter(groups)) {
+			showResult('Jacks Or Better');
+			updateBalance(betAmount * 1);
+		}
+		else {
+			showResult('Try Again');
+		}
+	}
+
+	function isRoyalFlush(hand, values) {
+		return isStraightFlush(hand, values) && values[4] === 14;
+	}
+
+	function isStraightFlush(hand, values) {
+		return isFlush(hand) && isStraight(values);
 	}
 
 	function hasFourOfAKind(groups) {
@@ -216,67 +291,10 @@
 		});
 	}
 
-	function dealCard(card, position) {
-		hand[position] = card;
-		cardImages[position].src = 'img/' + card + '.png';
-	}
-
-	function updateBalance(amount) {
-		accountBalance += amount;
-		balance.innerHTML = accountBalance;
-	}
-
-	function showResult(message) {
-		handResult.innerHTML = message;
-	}
-
-	function evaluateHand(hand) {
-		let values = getValues(hand);
-		let groups = groupValues(values);
-
-		if (isRoyalFlush(hand, values)) {
-			showResult('Royal Flush!!');
-			updateBalance(betAmount * 800);
-		}
-		else if (isStraightFlush(hand, values)) {
-			showResult('Straight Flush!!');
-			updateBalance(betAmount * 50);
-		}
-		else if (hasFourOfAKind(groups)) {
-			showResult('4 of a Kind!!');
-			updateBalance(betAmount * 40);
-		}
-		else if (isFullHouse(groups)) {
-			showResult('Full House!!');
-			updateBalance(betAmount * 10);
-		}
-		else if (isFlush(hand)) {
-			showResult('Flush!!');
-			updateBalance(betAmount * 7);
-		}
-		else if (isStraight(values)) {
-			showResult('Straight!!');
-			updateBalance(betAmount * 5);
-		}
-		else if (hasThreeOfAKind(groups)) {
-			showResult('3 of a Kind!!');
-			updateBalance(betAmount * 3);
-		}
-		else if (hasTwoPairs(grous)) {
-			showResult('2 Pair!');
-			updateBalance(betAmount * 2);
-		}
-		else if (isJacksOrBetter(groups)) {
-			showResult('Jacks or Better!!');
-			updateBalance(betAmount * 1);
-		}
-		else {
-			showResult('Aw, you lose!!');
-		}
-	}
-
 	function getCardValue(card) {
+
 		card = card.replace(/H|C|D|S/, '');
+
 		switch (card) {
 			case '2':
 			case '3':
@@ -295,9 +313,6 @@
 			case 'Q':
 				return 12;
 
-			case 'Q':
-				return 12;
-
 			case 'K':
 				return 13;
 
@@ -307,30 +322,37 @@
 	}
 
 	function getDeck() {
+
 		let deck = [
 			'2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', '10H', 'JH', 'QH', 'KH', 'AH',
 			'2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', '10S', 'JS', 'QS', 'KS', 'AS',
 			'2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C', '10C', 'JC', 'QC', 'KC', 'AC',
 			'2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '10D', 'JD', 'QD', 'KD', 'AD'
 		];
+
 		return shuffle(deck);
 	}
 
 	function shuffle(array) {
+
 		// Fisher–Yates Shuffle		
 		// Source: https://bost.ocks.org/mike/shuffle/
+
 		let m = array.length, t, i;
+
 		// While there remain elements to shuffle…
 		while (m) {
+
 			// Pick a remaining element…
 			i = Math.floor(Math.random() * m--);
+
 			// And swap it with the current element.
 			t = array[m];
 			array[m] = array[i];
 			array[i] = t;
 		}
+
 		return array;
 	}
+
 })();
-
-
