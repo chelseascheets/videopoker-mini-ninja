@@ -12,11 +12,10 @@ body {
 .card {
   display: inline-block;
   margin: 3px;
-  width: 100px;
+  width: 80px;
 }
 
 div {
-  margin: auto;
   color: black;
 }
 .hold {

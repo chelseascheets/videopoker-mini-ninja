@@ -16,13 +16,13 @@ PokerHand.prototype.deal = function(card, index) {
 
 
 PokerHand.prototype.evaluate = function () {
-  let values = this.getValues(hand);
+  let values = this.getValues();
 	let groups = this.groupValues(values);
 
-		if (this.isRoyalFlush(hand, values)) {
+		if (this.isRoyalFlush(values)) {
 			return 8;
 		}
-		else if (this.isStraightFlush(hand, values)) {
+		else if (this.isStraightFlush(values)) {
 			return 7;
 		}
 		else if (this.hasFourOfAKind(groups)) {
@@ -31,7 +31,7 @@ PokerHand.prototype.evaluate = function () {
 		else if (this.isFullHouse(groups)) {
 			return 5;
 		}
-		else if (this.isFlush(hand)) {
+		else if (this.isFlush()) {
 			return 4;
 		}
 		else if (this.isStraight(values)) {
