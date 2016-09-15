@@ -19,7 +19,9 @@
 	];
 	let multiplier = [
 		1,2,3,5,7,10,40,50,100
-	]
+	];
+
+	
 
 	let balance = document.getElementById('balance');
 	let bet = document.getElementById('bet');
