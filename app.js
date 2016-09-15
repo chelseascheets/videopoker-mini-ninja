@@ -4,7 +4,22 @@
 	let accountBalance = 0;
 	let firstClick = true;
 	let deck = [];
-	let hand = [];
+	let hand = null;
+
+	let hands = [
+		'Jacks Or Better',
+		'2 Pair',
+		'3 Of a Kind',
+		'Straight',
+		'Flush',
+		'Full House',
+		'Four Of A Kind',
+		'Straight Flush',
+		'Royal Flush'
+	];
+	let multiplier = [
+		1,2,3,5,7,10,40,50,100
+	]
 
 	let balance = document.getElementById('balance');
 	let bet = document.getElementById('bet');
@@ -72,12 +87,14 @@
 			updateBalance(-betAmount);
 
 			deck = getDeck();
-			hand = [];
+			hand = new PokerHand();
 
 			for (var i = 0; i < 5; i++) {
 				let card = deck.shift();
 				dealCard(card, i);
 			}
+
+			console.log(hand);
 		}
 		else {
 			for (var i = 0; i < 5; i++) {
@@ -92,7 +109,15 @@
 
 			deal.classList.add('disabled');
 			
-			evaluateHand(hand);	
+			let handValue = hand.evaluate();
+
+			if(handValue > -1) {
+				showResult(hands [handValue]);
+				updateBalance(multiplier[handValue] * betAmount);
+			}	
+			else {
+				showResult('Try Again!');
+			}
 			
 			replay.classList.remove('hidden');
 		}
@@ -113,6 +138,7 @@
 	}	
 
 	function dealCard(card, position) {
+		hand.deal(card, position);
 		hand[position] = card;
 		cardImages[position].src = 'img/' + card + '.png';
 	}
