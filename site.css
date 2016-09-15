@@ -1,4 +1,5 @@
 body {
+  padding-top: 45px;
   font: 24px Helvetica, Sans-Serif; 
   line-height: 24px; 
   background-image: url('http://www.edgewatercasino.ca/images/page-bgs/stack-of-chips.jpg'); 
@@ -12,28 +13,31 @@ body {
 .card {
   display: inline-block;
   margin: 3px;
-  width: 90px;
+  width: 99px;
 }
 
 div {
-  color: black;
+  color: purple;
 }
 .hold {
-  border: 2px solid lawngreen;
+  border: 2px solid lightseagreen;
   border-width: 5px;
 }
 td {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-align: left;
-  background-color: gray;
-  color: white;
+  background-color: lightskyblue;
+  color: darkblue;
   border: 1px solid black;
+  width: 50%;
 }
 table {
-    width: 100%;
+    width: "5%";
 }
 th {
-  background-color: gray;
+  background-color: lightseagreen;
   height: 50px;
+  color: darkblue;
+  width: 50%;
 }
