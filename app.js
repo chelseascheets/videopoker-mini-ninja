@@ -114,6 +114,14 @@
 			let handValue = hand.evaluate();
 
 			if(handValue > -1) {
+				let tier = 0;
+
+				if(betAmount >= 500) {
+					tier = 2;
+				}
+				else if (betAmount >= 250) {
+					tier = 1;
+				}
 				showResult(hands [handValue]);
 				updateBalance(multiplier[handValue] * betAmount);
 			}	
